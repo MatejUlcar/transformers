@@ -132,7 +132,8 @@ class LilaTokenizer(PreTrainedTokenizer):
         self.sp_model = spm.SentencePieceProcessor()
         self.sp_model.Load(str(vocab_file))
         self.vocab_file = vocab_file
-        self.dict_file = vocab_file+'/dict.txt'
+        # HACK: expecting dict.txt and sentencepiece.bpe.model and both in same folder. Unsure where vocab_file gets set to include model, so just using replace here
+        self.dict_file = vocab_file.replace('sentencepiece.bpe.model','dict.txt')
         # HACK: These tokens were added by fairseq but don't seem to be actually used when duplicated in the actual
         # sentencepiece vocabulary (this is the case for <s> and </s>
         self.fairseq_tokens_to_ids = {"<s>": 0, "<pad>": 1, "</s>": 2, "<unk>": 3}
